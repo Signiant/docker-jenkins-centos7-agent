@@ -31,7 +31,9 @@ RUN gem update --system
 RUN gem install compass
 
 # Update node and npm
+
 RUN npm install -g npm
+RUN npm install -g yo
 RUN npm install -g grunt
 RUN npm install -g grunt-cli
 RUN npm install -g bower

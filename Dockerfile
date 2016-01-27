@@ -32,16 +32,16 @@ RUN gem install compass
 
 # Update node and npm
 RUN npm install -g npm
-RUN npm install -g bower
 RUN npm install -g grunt
 RUN npm install -g grunt-cli
+RUN npm install -g bower
 RUN npm install -g phantomjs
 
 # We have to use this fixed version otherwise we get fatal error: socket hang up errors
 RUN npm install -g grunt-connect-proxy@0.1.10
 
 # Make sure anything/everything we put in the build user's home dir is owned correctly
-RUN chown -R $BUILD_USER:$BUILD_USER_GROUP /home/$BUILD_USER  
+RUN chown -R $BUILD_USER:$BUILD_USER_GROUP /home/$BUILD_USER
 
 EXPOSE 22
 

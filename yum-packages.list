@@ -27,4 +27,8 @@ subversion
 cmake  
 perl-autodie 
 perl-File*
-cmake 
+gettext
+tcl-devel
+tk-devel
+libcurl-devel
+expat-devel

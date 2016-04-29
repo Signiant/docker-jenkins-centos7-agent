@@ -33,6 +33,33 @@ RUN gem install compass
 # install phantomjs
 RUN npm install -g phantomjs
 
+# Install the latest version of git
+RUN cd /tmp && \
+    wget https://github.com/git/git/archive/v2.7.0.tar.gz && \
+    tar xvfz ./v2.7.0.tar.gz && \
+    cd git-2.7.0 && \
+    make configure && \
+    ./configure --prefix=/usr && \
+    make && \
+    make install
+
+# Install Python 2.7.X for Umpire
+RUN cd /tmp && \
+    wget https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz && \
+    tar xvfz Python-2.7.11.tgz && \
+    cd Python-2.7.11 && \
+    ./configure --prefix=/usr/local && \
+    make && \
+    make altinstall
+
+# Install pip
+RUN cd /tmp && \
+    wget https://bootstrap.pypa.io/get-pip.py && \
+    python2.7 ./get-pip.py
+
+# Install umpire
+RUN pip2.7 install umpire
+
 # Make sure anything/everything we put in the build user's home dir is owned correctly
 RUN chown -R $BUILD_USER:$BUILD_USER_GROUP /home/$BUILD_USER
 

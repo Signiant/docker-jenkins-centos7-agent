@@ -3,6 +3,8 @@ MAINTAINER devops@signiant.com
 
 ENV BUILD_USER bldmgr
 ENV BUILD_USER_GROUP users
+ENV UMPIRE_VERSION 0.4.4
+
 
 # Set the timezone
 RUN unlink /etc/localtime
@@ -61,7 +63,7 @@ RUN cd /tmp && \
     python2.7 ./get-pip.py
 
 # Install umpire
-RUN pip2.7 install umpire
+RUN pip2.7 install umpire==0.4.4
 
 # Make sure anything/everything we put in the build user's home dir is owned correctly
 RUN chown -R $BUILD_USER:$BUILD_USER_GROUP /home/$BUILD_USER

@@ -4,7 +4,6 @@ MAINTAINER devops@signiant.com
 ENV BUILD_USER bldmgr
 ENV BUILD_USER_GROUP users
 
-
 # Set the timezone
 RUN unlink /etc/localtime
 RUN ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
@@ -16,13 +15,19 @@ RUN curl -fsSL http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binar
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 ENV MAVEN_HOME /usr/share/maven
 
+# Enable Fedora Repositories
+COPY fedora.repo /etc/yum.repos.d/Fedora-Core24.repo
+
 # Install yum packages required for build node
 COPY yum-packages.list /tmp/yum.packages.list
 RUN chmod +r /tmp/yum.packages.list
-RUN yum install -y -q `cat /tmp/yum.packages.list`
+RUN yum install -y -q --skip-broken --disablerepo=warning:fedora `cat /tmp/yum.packages.list`
 
 # Install yum development tools
-RUN yum groupinstall -y -q "Development Tools"
+RUN yum groupinstall -y -q --disablerepo=warning:fedora "Development Tools"
+
+# Update to latest gcc
+RUN yum update -y -q --skip-broken gcc --enablerepo=warning:fedora
 
 # Install jboss
 RUN wget http://sourceforge.net/projects/jboss/files/JBoss/JBoss-5.1.0.GA/jboss-5.1.0.GA.zip/download -O /tmp/jboss-5.1.0.GA.zip
@@ -61,10 +66,9 @@ RUN cd /tmp && \
     wget https://bootstrap.pypa.io/get-pip.py && \
     python2.7 ./get-pip.py
 
-
-ENV UMPIRE_VERSION 0.5.0a3
 # Install umpire
-RUN pip2.7 install umpire==${UMPIRE_VERSION}
+ENV UMPIRE_VERSION=0.5.0
+RUN pip2.7 install umpire==UMPIRE_VERSION
 
 # Make sure anything/everything we put in the build user's home dir is owned correctly
 RUN chown -R $BUILD_USER:$BUILD_USER_GROUP /home/$BUILD_USER

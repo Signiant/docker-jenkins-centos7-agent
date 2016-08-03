@@ -1,0 +1,5 @@
+[warning:fedora]
+name=fedora
+mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-24&arch=$basearch
+enabled=1
+gpgcheck=0

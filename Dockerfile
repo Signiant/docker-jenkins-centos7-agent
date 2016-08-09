@@ -27,7 +27,7 @@ RUN yum install -y -q --skip-broken --disablerepo=warning:fedora `cat /tmp/yum.p
 RUN yum groupinstall -y -q --disablerepo=warning:fedora "Development Tools"
 
 # Update to latest gcc
-RUN yum update -y -q --skip-broken gcc --enablerepo=warning:fedora
+RUN yum update -y -q --skip-broken gcc cmake --enablerepo=warning:fedora
 
 # Install jboss
 RUN wget http://sourceforge.net/projects/jboss/files/JBoss/JBoss-5.1.0.GA/jboss-5.1.0.GA.zip/download -O /tmp/jboss-5.1.0.GA.zip
@@ -67,8 +67,8 @@ RUN cd /tmp && \
     python2.7 ./get-pip.py
 
 # Install umpire
-ENV UMPIRE_VERSION=0.5.0
-RUN pip2.7 install umpire==UMPIRE_VERSION
+ENV UMPIRE_VERSION=0.5.3
+RUN pip2.7 install umpire==$UMPIRE_VERSION
 
 # Make sure anything/everything we put in the build user's home dir is owned correctly
 RUN chown -R $BUILD_USER:$BUILD_USER_GROUP /home/$BUILD_USER
@@ -84,5 +84,6 @@ ENV SLAVE_OS Linux
 
 ADD start.sh /
 RUN chmod 777 /start.sh
+
 
 CMD ["sh", "/start.sh"]

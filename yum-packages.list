@@ -24,7 +24,6 @@ npm
 wget
 cloc
 subversion 
-cmake  
 perl-autodie 
 perl-File*
 gettext

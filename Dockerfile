@@ -62,7 +62,7 @@ RUN cd /tmp && \
     python2.7 ./get-pip.py
 
 
-ENV UMPIRE_VERSION 0.5.0a3
+ENV UMPIRE_VERSION 0.5.3
 # Install umpire
 RUN pip2.7 install umpire==${UMPIRE_VERSION}
 

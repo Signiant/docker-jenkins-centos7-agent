@@ -1,4 +1,3 @@
-deltarpm
 ruby
 make
 ruby-devel
@@ -21,7 +20,6 @@ gcc
 zlib-devel
 libxslt-devel
 libxml2-devel
-npm
 wget
 cloc
 subversion
@@ -33,3 +31,4 @@ tcl-devel
 tk-devel
 libcurl-devel
 expat-devel
+python-setuptools

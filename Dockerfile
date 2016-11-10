@@ -19,6 +19,7 @@ ENV MAVEN_HOME /usr/share/maven
 # Install yum packages required for build node
 COPY yum-packages.list /tmp/yum.packages.list
 RUN chmod +r /tmp/yum.packages.list
+RUN npm install -g npm
 RUN yum install -y -q `cat /tmp/yum.packages.list`
 
 # Install yum development tools
@@ -57,10 +58,8 @@ RUN cd /tmp && \
     make altinstall
 
 # Install pip
-RUN cd /tmp && \
-    wget https://bootstrap.pypa.io/get-pip.py && \
-    python2.7 ./get-pip.py
-
+RUN easy_install -q pip && \
+    pip install --upgrade pip
 
 ENV UMPIRE_VERSION 0.5.3
 # Install umpire

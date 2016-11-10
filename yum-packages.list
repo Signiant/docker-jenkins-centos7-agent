@@ -1,3 +1,4 @@
+deltarpm
 ruby
 make
 ruby-devel
@@ -23,9 +24,9 @@ libxml2-devel
 npm
 wget
 cloc
-subversion 
-cmake  
-perl-autodie 
+subversion
+cmake
+perl-autodie
 perl-File*
 gettext
 tcl-devel

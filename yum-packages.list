@@ -32,3 +32,4 @@ tk-devel
 libcurl-devel
 expat-devel
 python-setuptools
+redhat-lsb-core

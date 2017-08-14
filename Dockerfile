@@ -36,7 +36,7 @@ RUN gem update --system
 RUN gem install compass
 
 # install phantomjs
-RUN npm install -g phantomjs
+RUN npm install -g phantomjs@2.1.1
 
 # Install the latest version of git
 RUN cd /tmp && \

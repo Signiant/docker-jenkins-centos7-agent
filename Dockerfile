@@ -57,7 +57,7 @@ RUN cd /tmp && \
 RUN easy_install -q pip && \
     pip install --upgrade pip
 
-ENV UMPIRE_VERSION 0.5.3
+ENV UMPIRE_VERSION 0.5.4
 # Install umpire
 RUN pip2.7 install umpire==${UMPIRE_VERSION}
 

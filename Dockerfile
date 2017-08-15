@@ -19,7 +19,6 @@ ENV MAVEN_HOME /usr/share/maven
 # Install yum packages required for build node
 COPY yum-packages.list /tmp/yum.packages.list
 RUN chmod +r /tmp/yum.packages.list
-RUN npm install -g npm
 RUN yum install -y -q `cat /tmp/yum.packages.list`
 
 # Install yum development tools
@@ -34,9 +33,6 @@ RUN rm -f /tmp/jboss-5.1.0.GA.zip
 RUN gem install json_pure
 RUN gem update --system
 RUN gem install compass
-
-# install phantomjs
-RUN npm install -g phantomjs@2.1.1
 
 # Install the latest version of git
 RUN cd /tmp && \
@@ -64,6 +60,12 @@ RUN easy_install -q pip && \
 ENV UMPIRE_VERSION 0.5.3
 # Install umpire
 RUN pip2.7 install umpire==${UMPIRE_VERSION}
+
+# upgrade npm, node and install phantomjs
+RUN npm install -g npm
+RUN npm install -g n
+RUN n 6.10.0
+RUN npm install -g phantomjs
 
 # Make sure anything/everything we put in the build user's home dir is owned correctly
 RUN chown -R $BUILD_USER:$BUILD_USER_GROUP /home/$BUILD_USER

@@ -33,3 +33,6 @@ libcurl-devel
 expat-devel
 python-setuptools
 redhat-lsb-core
+libmpc-devel
+mpfr-devel
+gmp-devel

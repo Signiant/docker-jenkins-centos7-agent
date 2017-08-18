@@ -12,8 +12,8 @@ RUN ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
 # Install maven
 ENV MAVEN_VERSION 3.2.1
 RUN curl -fsSL http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
-  && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+    && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
+    && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 ENV MAVEN_HOME /usr/share/maven
 
 # Install yum packages required for build node
@@ -36,23 +36,22 @@ RUN gem install compass
 
 # Install cmake 3.9
 RUN cd /tmp && \
-yum erase cmake && \
-wget "https://cmake.org/files/v3.9/cmake-3.9.1.tar.gz" && \
-tar -xzvf cmake-3.9.1.tar.gz && \
-cd cmake-3.9.1 && \
-./bootstrap && \
-make -j8 && \
-make install
+    yum erase -y cmake && \
+    wget "https://cmake.org/files/v3.9/cmake-3.9.1.tar.gz" && \
+    tar -xzvf cmake-3.9.1.tar.gz && \
+    cd cmake-3.9.1 && \
+    ./bootstrap && \
+    make -j8 && \
+    make install
 
 # Install gcc 4.9 
 RUN cd /tmp && \
-yum install -y libmpc-devel mpfr-devel gmp-devel && \
-curl ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2 -O && \
-tar xvfj gcc-4.9.2.tar.bz2 && \
-cd gcc-4.9.2 && \
-./configure --disable-multilib --enable-languages=c,c++ && \
-make -j8 && \
-make install
+    curl ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2 -O && \
+    tar xvfj gcc-4.9.2.tar.bz2 && \
+    cd gcc-4.9.2 && \
+    ./configure --disable-multilib --enable-languages=c,c++ && \
+    make -j8 && \
+    make install
 
 # gcc installs .so files in /usr/local/lib64...
 RUN set -ex && \

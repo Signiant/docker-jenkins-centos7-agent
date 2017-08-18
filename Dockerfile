@@ -34,6 +34,32 @@ RUN gem install json_pure
 RUN gem update --system
 RUN gem install compass
 
+# Install cmake 3.9
+RUN cd /tmp && \
+yum erase cmake && \
+wget "https://cmake.org/files/v3.9/cmake-3.9.1.tar.gz" && \
+tar -xzvf cmake-3.9.1.tar.gz && \
+cd cmake-3.9.1 && \
+./bootstrap && \
+make -j8 && \
+make install
+
+# Install gcc 4.9 
+RUN cd /tmp && \
+yum install -y libmpc-devel mpfr-devel gmp-devel && \
+curl ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2 -O && \
+tar xvfj gcc-4.9.2.tar.bz2 && \
+cd gcc-4.9.2 && \
+./configure --disable-multilib --enable-languages=c,c++ && \
+make -j8 && \
+make install
+
+# gcc installs .so files in /usr/local/lib64...
+RUN set -ex && \
+cd /etc/ld.so.conf.d && \
+echo '/usr/local/lib64' > local-lib64.conf && \
+ldconfig -v
+
 # Install the latest version of git
 RUN cd /tmp && \
     wget https://github.com/git/git/archive/v2.7.0.tar.gz && \

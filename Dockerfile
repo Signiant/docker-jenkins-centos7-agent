@@ -55,9 +55,9 @@ RUN cd /tmp && \
 
 # gcc installs .so files in /usr/local/lib64...
 RUN set -ex && \
-cd /etc/ld.so.conf.d && \
-echo '/usr/local/lib64' > local-lib64.conf && \
-ldconfig -v
+    cd /etc/ld.so.conf.d && \
+    echo '/usr/local/lib64' > local-lib64.conf && \
+    ldconfig -v
 
 # Install the latest version of git
 RUN cd /tmp && \
@@ -65,7 +65,7 @@ RUN cd /tmp && \
     tar xvfz ./v2.7.0.tar.gz && \
     cd git-2.7.0 && \
     make configure && \
-    ./configure --prefix=/usr && \
+    ./configure --prefix=/usr --without-tcltk && \
     make && \
     make install
 

@@ -1,3 +1,4 @@
+#!/bin/bash
 FROM signiant/docker-jenkins-centos-base:centos7
 MAINTAINER devops@signiant.com
 
@@ -15,19 +16,40 @@ RUN curl -fsSL http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binar
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 ENV MAVEN_HOME /usr/share/maven
 
-# Enable Fedora Repositories
-COPY fedora.repo /etc/yum.repos.d/Fedora-Core24.repo
 
 # Install yum packages required for build node
 COPY yum-packages.list /tmp/yum.packages.list
 RUN chmod +r /tmp/yum.packages.list
-RUN yum install -y -q --skip-broken --disablerepo=warning:fedora `cat /tmp/yum.packages.list`
+RUN yum install -y -q --skip-broken `cat /tmp/yum.packages.list`
 
 # Install yum development tools
-RUN yum groupinstall -y -q --disablerepo=warning:fedora "Development Tools"
+RUN yum groupinstall -y -q "Development Tools"
 
-# Update to latest gcc
-RUN yum update -y -q --skip-broken gcc cmake --enablerepo=warning:fedora
+# Install the latest version of cmake 
+RUN cd /tmp && \
+    yum erase cmake && \
+    wget "https://cmake.org/files/v3.9/cmake-3.9.1.tar.gz" && \
+    tar -xzvf cmake-3.9.1.tar.gz && \
+    cd cmake-3.9.1 && \
+    ./bootstrap && \
+    make -j8 && \
+    make install
+
+# Install gcc 6.1 
+RUN cd /tmp && \
+    curl ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-6.1.0/gcc-6.1.0.tar.bz2 -O && \
+    tar xvfj gcc-6.1.0.tar.bz2 && \
+    cd gcc-6.1.0 && \
+    ./contrib/download_prerequisites && \
+    ./configure --disable-multilib --enable-languages=c,c++ && \
+    make -j8 && \
+    make install
+
+# gcc installs .so files in /usr/local/lib64...
+RUN set -ex && \
+cd /etc/ld.so.conf.d && \
+echo '/usr/local/lib64' > local-lib64.conf && \
+ldconfig -v
 
 # Install jboss
 RUN wget http://sourceforge.net/projects/jboss/files/JBoss/JBoss-5.1.0.GA/jboss-5.1.0.GA.zip/download -O /tmp/jboss-5.1.0.GA.zip
@@ -37,10 +59,12 @@ RUN rm -f /tmp/jboss-5.1.0.GA.zip
 # Install Compass
 RUN gem install json_pure
 RUN gem update --system
-RUN gem install compass
+#RUN gem install compass #(moved to yum-packages.list)
 
 # install phantomjs
 RUN npm install -g phantomjs
+
+RUN set -ex && gcc --version
 
 # Install the latest version of git
 RUN cd /tmp && \
@@ -48,7 +72,7 @@ RUN cd /tmp && \
     tar xvfz ./v2.7.0.tar.gz && \
     cd git-2.7.0 && \
     make configure && \
-    ./configure --prefix=/usr && \
+    ./configure --prefix=/usr --without-tcltk && \
     make && \
     make install
 
@@ -62,13 +86,12 @@ RUN cd /tmp && \
     make altinstall
 
 # Install pip
-RUN cd /tmp && \
-    wget https://bootstrap.pypa.io/get-pip.py && \
-    python2.7 ./get-pip.py
+RUN easy_install -q pip && \
+    pip install --upgrade pip
 
+ENV UMPIRE_VERSION 0.5.4
 # Install umpire
-ENV UMPIRE_VERSION=0.5.3
-RUN pip2.7 install umpire==$UMPIRE_VERSION
+RUN pip2.7 install umpire==${UMPIRE_VERSION}
 
 # Make sure anything/everything we put in the build user's home dir is owned correctly
 RUN chown -R $BUILD_USER:$BUILD_USER_GROUP /home/$BUILD_USER

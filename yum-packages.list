@@ -31,3 +31,5 @@ tcl-devel
 tk-devel
 libcurl-devel
 expat-devel
+ruby-compass
+libmpc-devel

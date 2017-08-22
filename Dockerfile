@@ -53,7 +53,6 @@ RUN rm -f /tmp/jboss-5.1.0.GA.zip
 # Install Compass
 RUN gem install json_pure
 RUN gem update --system
-#RUN gem install compass #(moved to yum-packages.list)
 
 # install phantomjs
 RUN npm install -g phantomjs

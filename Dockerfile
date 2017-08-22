@@ -86,6 +86,7 @@ ENV CC /opt/rh/devtoolset-6/root/usr/bin/gcc
 ENV CXX /opt/rh/devtoolset-6/root/usr/bin/g++
 RUN rm /usr/bin/g++ && ln -s /opt/rh/devtoolset-6/root/usr/bin/g++ /usr/bin/g++
 RUN rm /usr/bin/gcc && ln -s /opt/rh/devtoolset-6/root/usr/bin/gcc /usr/bin/gcc
+RUN rm /usr/bin/c++ && ln -s /opt/rh/devtoolset-6/root/usr/bin/c++ /usr/bin/c++
 
 # Make sure anything/everything we put in the build user's home dir is owned correctly
 RUN chown -R $BUILD_USER:$BUILD_USER_GROUP /home/$BUILD_USER

@@ -33,3 +33,5 @@ libcurl-devel
 expat-devel
 ruby-compass
 libmpc-devel
+openssl-devel
+

@@ -35,15 +35,9 @@ RUN cd /tmp && \
     make -j8 && \
     make install
 
-# Install gcc 6.1 
-RUN cd /tmp && \
-    curl ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-6.1.0/gcc-6.1.0.tar.bz2 -O && \
-    tar xvfj gcc-6.1.0.tar.bz2 && \
-    cd gcc-6.1.0 && \
-    ./contrib/download_prerequisites && \
-    ./configure --disable-multilib --enable-languages=c,c++ && \
-    make -j8 && \
-    make install
+RUN yum install -y centos-release-scl-rh && \
+    yum install -y devtoolset-6 && \
+    scl enable devtoolset-6 bash
 
 # gcc installs .so files in /usr/local/lib64...
 RUN set -ex && \

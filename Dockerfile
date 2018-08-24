@@ -63,7 +63,6 @@ RUN pip2.7 install umpire==${UMPIRE_VERSION}
 
 # upgrade npm, node and install phantomjs
 RUN npm install -g npm
-RUN npm install -g n
 RUN n 6.10.0
 RUN npm install -g phantomjs
 

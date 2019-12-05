@@ -1,5 +1,5 @@
 #!/bin/bash
-FROM signiant/docker-jenkins-centos-base:centos7
+FROM signiant/docker-jenkins-centos-base:centos7-java8
 MAINTAINER devops@signiant.com
 
 ENV BUILD_USER bldmgr
